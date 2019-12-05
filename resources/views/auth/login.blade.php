@@ -67,9 +67,6 @@
                                             <input type="submit" class="btn btn-lg btn-primary btn-block"
                                                    value="Đăng nhập">
                                         </div>
-                                        <div class="login-help" style="text-align: center">
-                                            <a href="/register">Đăng ký</a>
-                                        </div>
                                     </div>
                                 </div>
                             </fieldset>
