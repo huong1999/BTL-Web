@@ -88,6 +88,13 @@
       <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
       <path value="$PROJECT_DIR$/vendor/swiftmailer/swiftmailer" />
       <path value="$PROJECT_DIR$/vendor/symfony/error-handler" />
+      <path value="$PROJECT_DIR$/vendor/laravelcollective/html" />
+      <path value="$PROJECT_DIR$/vendor/appzcoder/crud-generator" />
+      <path value="$PROJECT_DIR$/vendor/anahkiasen/underscore-php" />
+      <path value="$PROJECT_DIR$/vendor/appzcoder/laravel-admin" />
+      <path value="$PROJECT_DIR$/vendor/spatie/string" />
+      <path value="$PROJECT_DIR$/vendor/spatie/laravel-activitylog" />
+      <path value="$PROJECT_DIR$/vendor/patchwork/utf8" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="7.2" />

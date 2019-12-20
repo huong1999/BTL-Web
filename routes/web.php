@@ -15,13 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Sửa đường dẫn trang chủ mặc định
-Route::get('/', 'StudentController@index');
-Route::get('/home', 'StudentController@index');
 
-// Đăng nhập và xử lý đăng nhập
-Route::get('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@getLogin']);
-Route::post('login', [ 'as' => 'login', 'uses' => 'Auth\LoginController@postLogin']);
+Auth::routes();
 
-// Đăng xuất
-Route::get('logout', [ 'as' => 'logout', 'uses' => 'Auth\LogoutController@getLogout']);
+Route::get('/home', 'HomeController@index')->name('home');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('admin', 'Admin\AdminController@index');
+Route::resource('admin/roles', 'Admin\RolesController');
+Route::resource('admin/permissions', 'Admin\PermissionsController');
+Route::resource('admin/users', 'Admin\UsersController');
+Route::resource('admin/pages', 'Admin\PagesController');
+Route::resource('admin/activitylogs', 'Admin\ActivityLogsController')->only([
+    'index', 'show', 'destroy'
+]);
+Route::resource('admin/settings', 'Admin\SettingsController');
+Route::get('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
+Route::post('admin/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
