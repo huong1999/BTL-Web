@@ -16,6 +16,8 @@ class RolesController extends Controller
      */
     public function index(Request $request)
     {
+        $roles = Role::with('users')->get();
+
         $keyword = $request->get('search');
         $perPage = 15;
 

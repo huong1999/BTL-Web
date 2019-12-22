@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Page;
+use App\Exam;
 use Illuminate\Http\Request;
 
-class PagesController extends Controller
+class ExamsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,14 +21,13 @@ class PagesController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $pages = Page::where('title', 'LIKE', "%$keyword%")
-                ->orWhere('content', 'LIKE', "%$keyword%")
+            $exams = Exam::where('name', 'LIKE', "%$keyword%")
                 ->latest()->paginate($perPage);
         } else {
-            $pages = Page::latest()->paginate($perPage);
+            $exams = Exam::latest()->paginate($perPage);
         }
 
-        return view('admin.pages.index', compact('pages'));
+        return view('admin.exams.index', compact('exams'));
     }
 
     /**
@@ -38,7 +37,7 @@ class PagesController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.create');
+        return view('admin.exams.create');
     }
 
     /**
@@ -51,14 +50,13 @@ class PagesController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-			'title' => 'required',
-			'content' => 'required'
+			'name' => 'required'
 		]);
         $requestData = $request->all();
         
-        Page::create($requestData);
+        Exam::create($requestData);
 
-        return redirect('admin/pages')->with('flash_message', 'Page added!');
+        return redirect('admin/exams')->with('flash_message', 'Exam added!');
     }
 
     /**
@@ -70,9 +68,9 @@ class PagesController extends Controller
      */
     public function show($id)
     {
-        $page = Page::findOrFail($id);
+        $exam = Exam::findOrFail($id);
 
-        return view('admin.pages.show', compact('page'));
+        return view('admin.exams.show', compact('exam'));
     }
 
     /**
@@ -84,9 +82,9 @@ class PagesController extends Controller
      */
     public function edit($id)
     {
-        $page = Page::findOrFail($id);
+        $exam = Exam::findOrFail($id);
 
-        return view('admin.pages.edit', compact('page'));
+        return view('admin.exams.edit', compact('exam'));
     }
 
     /**
@@ -100,15 +98,14 @@ class PagesController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-			'title' => 'required',
-			'content' => 'required'
+			'name' => 'required'
 		]);
         $requestData = $request->all();
         
-        $page = Page::findOrFail($id);
-        $page->update($requestData);
+        $exam = Exam::findOrFail($id);
+        $exam->update($requestData);
 
-        return redirect('admin/pages')->with('flash_message', 'Page updated!');
+        return redirect('admin/exams')->with('flash_message', 'Exam updated!');
     }
 
     /**
@@ -120,8 +117,8 @@ class PagesController extends Controller
      */
     public function destroy($id)
     {
-        Page::destroy($id);
+        Exam::destroy($id);
 
-        return redirect('admin/pages')->with('flash_message', 'Page deleted!');
+        return redirect('admin/exams')->with('flash_message', 'Exam deleted!');
     }
 }

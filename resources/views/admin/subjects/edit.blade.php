@@ -7,9 +7,9 @@
 
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">Edit Setting #{{ $setting->id }}</div>
+                    <div class="card-header">Edit Subject #{{ $subject->id }}</div>
                     <div class="card-body">
-                        <a href="{{ url('/admin/settings') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/admin/subjects') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
 
@@ -21,14 +21,14 @@
                             </ul>
                         @endif
 
-                        {!! Form::model($setting, [
+                        {!! Form::model($subject, [
                             'method' => 'PATCH',
-                            'url' => ['/admin/settings', $setting->id],
+                            'url' => ['/admin/subjects', $subject->id],
                             'class' => 'form-horizontal',
                             'files' => true
                         ]) !!}
 
-                        @include ('admin.settings.form', ['formMode' => 'edit'])
+                        @include ('admin.subjects.form', ['formMode' => 'edit'])
 
                         {!! Form::close() !!}
 

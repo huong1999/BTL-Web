@@ -7,9 +7,9 @@
 
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">Create New Setting</div>
+                    <div class="card-header">Create New Exam</div>
                     <div class="card-body">
-                        <a href="{{ url('/admin/settings') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/admin/exams') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
                         <br />
                         <br />
 
@@ -21,9 +21,9 @@
                             </ul>
                         @endif
 
-                        {!! Form::open(['url' => '/admin/settings', 'class' => 'form-horizontal', 'files' => true]) !!}
+                        {!! Form::open(['url' => '/admin/exams', 'class' => 'form-horizontal', 'files' => true]) !!}
 
-                        @include ('admin.settings.form', ['formMode' => 'create'])
+                        @include ('admin.exams.form', ['formMode' => 'create'])
 
                         {!! Form::close() !!}
 

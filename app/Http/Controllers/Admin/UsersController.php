@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Classes;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
@@ -17,16 +20,20 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = 15;
+        $class = $request->get('class');
+        $roles = Role::pluck('label', 'name');
+        $type = $request->input('role') == 'admin'? 'isAdmin' : 'isUser';
+        $classes = Classes::pluck('name', 'id');
+        $users = User::has($type)
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', "%$keyword%");
+            })
+            ->when($class, function ($query) use ($class) {
+                $query->where('class_id', $class);
+            })
+            ->latest()->paginate(15);
 
-        if (!empty($keyword)) {
-            $users = User::where('name', 'LIKE', "%$keyword%")->orWhere('email', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $users = User::latest()->paginate($perPage);
-        }
-
-        return view('admin.users.index', compact('users'));
+        return view('admin.users.index', compact('users', 'roles', 'classes'));
     }
 
     /**
@@ -38,16 +45,18 @@ class UsersController extends Controller
     {
         $roles = Role::select('id', 'name', 'label')->get();
         $roles = $roles->pluck('label', 'name');
+        $classes = Classes::pluck('name', 'id');
 
-        return view('admin.users.create', compact('roles'));
+        return view('admin.users.create', compact('roles', 'classes'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request $request
+     * @param Request $request
      *
      * @return void
+     * @throws ValidationException
      */
     public function store(Request $request)
     {
@@ -97,20 +106,20 @@ class UsersController extends Controller
     {
         $roles = Role::select('id', 'name', 'label')->get();
         $roles = $roles->pluck('label', 'name');
-
-        $user = User::with('roles')->select('id', 'name', 'email')->findOrFail($id);
+        $classes = Classes::pluck('name', 'id');
+        $user = User::with('roles')->findOrFail($id);
         $user_roles = [];
         foreach ($user->roles as $role) {
             $user_roles[] = $role->name;
         }
 
-        return view('admin.users.edit', compact('user', 'roles', 'user_roles'));
+        return view('admin.users.edit', compact('user', 'roles', 'user_roles', 'classes'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param Request $request
      * @param  int      $id
      *
      * @return void

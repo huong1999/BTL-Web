@@ -49,4 +49,9 @@ class Role extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }

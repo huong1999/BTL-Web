@@ -8,7 +8,7 @@
     {!! Form::email('email', null, ['class' => 'form-control', 'required' => 'required']) !!}
     {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group{{ $errors->has('password') ? ' has-error' : ''}}">
+<div class="form-group{{ $errors->has('password') ? ' /home/sanghas-error' : ''}}">
     {!! Form::label('password', 'Password: ', ['class' => 'control-label']) !!}
     @php
         $passwordOptions = ['class' => 'form-control'];
@@ -18,6 +18,23 @@
     @endphp
     {!! Form::password('password', $passwordOptions) !!}
     {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
+</div>
+
+<div class="form-group">
+    <label for="class_id">Class</label>
+    <select name="class_id" id="class_id" class="form-control">
+        @foreach($classes as $key => $value)
+            <option value="{{ $key }}" @isset($user) {{ $user->class_id == $key ? 'selected' : '' }} @endisset>{{ $value }}</option>
+        @endforeach
+    </select>
+</div>
+<div class="form-group">
+    <label for="date_of_birth">Date of Birth</label>
+    <input type="date" class="form-control" name="date_of_birth" id="date_of_birth" value="{{ isset($user) ? $user->date_of_birth : old('date_of_birth') }}">
+</div>
+<div class="form-group">
+    <label for="code">Code</label>
+    <input type="text" class="form-control" name="code" id="code" value="{{ isset($user) ? $user->code : old('code') }}">
 </div>
 <div class="form-group{{ $errors->has('roles') ? ' has-error' : ''}}">
     {!! Form::label('role', 'Role: ', ['class' => 'control-label']) !!}

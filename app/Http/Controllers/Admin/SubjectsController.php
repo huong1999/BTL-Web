@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use App\Setting;
+use App\Subject;
 use Illuminate\Http\Request;
 
-class SettingsController extends Controller
+class SubjectsController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -21,14 +21,13 @@ class SettingsController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $settings = Setting::where('key', 'LIKE', "%$keyword%")
-                ->orWhere('value', 'LIKE', "%$keyword%")
-                ->orderBy('key')->paginate($perPage);
+            $subjects = Subject::where('name', 'LIKE', "%$keyword%")
+                ->latest()->paginate($perPage);
         } else {
-            $settings = Setting::orderBy('key')->paginate($perPage);
+            $subjects = Subject::latest()->paginate($perPage);
         }
 
-        return view('admin.settings.index', compact('settings'));
+        return view('admin.subjects.index', compact('subjects'));
     }
 
     /**
@@ -38,7 +37,7 @@ class SettingsController extends Controller
      */
     public function create()
     {
-        return view('admin.settings.create');
+        return view('admin.subjects.create');
     }
 
     /**
@@ -50,19 +49,14 @@ class SettingsController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate(
-            $request,
-            [
-                'key' => 'required|string|unique:settings',
-                'value' => 'required'
-            ]
-        );
-
+        $this->validate($request, [
+			'name' => 'required'
+		]);
         $requestData = $request->all();
+        
+        Subject::create($requestData);
 
-        Setting::create($requestData);
-
-        return redirect('admin/settings')->with('flash_message', 'Setting added!');
+        return redirect('admin/subjects')->with('flash_message', 'Subject added!');
     }
 
     /**
@@ -74,9 +68,9 @@ class SettingsController extends Controller
      */
     public function show($id)
     {
-        $setting = Setting::findOrFail($id);
+        $subject = Subject::findOrFail($id);
 
-        return view('admin.settings.show', compact('setting'));
+        return view('admin.subjects.show', compact('subject'));
     }
 
     /**
@@ -88,9 +82,9 @@ class SettingsController extends Controller
      */
     public function edit($id)
     {
-        $setting = Setting::findOrFail($id);
+        $subject = Subject::findOrFail($id);
 
-        return view('admin.settings.edit', compact('setting'));
+        return view('admin.subjects.edit', compact('subject'));
     }
 
     /**
@@ -103,19 +97,15 @@ class SettingsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate(
-            $request,
-            [
-                'key' => 'required|string|unique:settings,key,' . $id,
-                'value' => 'required'
-            ]
-        );
+        $this->validate($request, [
+			'name' => 'required'
+		]);
         $requestData = $request->all();
+        
+        $subject = Subject::findOrFail($id);
+        $subject->update($requestData);
 
-        $setting = Setting::findOrFail($id);
-        $setting->update($requestData);
-
-        return redirect('admin/settings')->with('flash_message', 'Setting updated!');
+        return redirect('admin/subjects')->with('flash_message', 'Subject updated!');
     }
 
     /**
@@ -127,8 +117,8 @@ class SettingsController extends Controller
      */
     public function destroy($id)
     {
-        Setting::destroy($id);
+        Subject::destroy($id);
 
-        return redirect('admin/settings')->with('flash_message', 'Setting deleted!');
+        return redirect('admin/subjects')->with('flash_message', 'Subject deleted!');
     }
 }

@@ -4,19 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Page extends Model
+class Subject extends Model
 {
     use LogsActivity;
-    use SoftDeletes;
+    
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'pages';
+    protected $table = 'subjects';
 
     /**
     * The database primary key value.
@@ -30,7 +29,9 @@ class Page extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'content'];
+    protected $fillable = ['name'];
+
+    
 
     /**
      * Change activity log event description
