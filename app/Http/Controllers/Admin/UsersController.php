@@ -167,8 +167,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::destroy($id);
+        $this->user->deleteUser($id);
 
         return redirect('admin/users')->with('flash_message', 'User deleted!');
     }
+
 }

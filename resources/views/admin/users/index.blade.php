@@ -58,7 +58,7 @@
                                 </thead>
                                 <tbody>
                                 @foreach($users as $item)
-                                    <tr>
+                                    <tr class="item{{$item->id}}">
                                         <td>{{ $item->id }}</td>
                                         <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td>
                                         <td>{{ $item->code }}</td>
@@ -78,9 +78,10 @@
                                             ]) !!}
                                             {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', array(
                                                     'type' => 'submit',
-                                                    'class' => 'btn btn-danger btn-sm',
+                                                    'class' => 'btn btn-danger btn-sm delete-user',
                                                     'title' => 'Delete User',
-                                                    'onclick'=>'return confirm("Confirm delete?")'
+                                                    'onclick'=>'return confirm("Confirm delete?")',
+                                                    'value' => '{{ $item->id }}',
                                             )) !!}
                                             {!! Form::close() !!}
                                         </td>
@@ -97,4 +98,26 @@
             </div>
         </div>
     </div>
+@endsection
+@section('script')
+    <script>
+    $(".delete-user").click(function(){
+        var id = $(this).val();
+        var token = $("meta[name='csrf-token']").attr("content");
+
+        $.ajax(
+        {
+            url: "admin/users/"+id,
+            type: 'DELETE',
+            success: function (data){
+                console.log("it Works");
+                $('.item' + data['id']).remove();
+            },
+            error: function (data) {
+                console.error('Error:', data);
+            }
+        });
+
+    });
+    </script>
 @endsection

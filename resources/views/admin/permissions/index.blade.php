@@ -28,7 +28,7 @@
                         <br/>
 
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                     <tr>
                                         <th>ID</th><th>Name</th><th>Label</th><th>Actions</th>

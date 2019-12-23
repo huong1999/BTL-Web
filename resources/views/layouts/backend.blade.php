@@ -18,9 +18,21 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/admin') }}">
-                    ExamReg
-                </a>
+                <div class="col-2">
+                    <a class="navbar-brand" href="{{ url('/admin') }}">
+                        ExamReg
+                    </a>
+                </div>
+                <div class="col-2" style="border-left:1px solid;">
+                    <a href="{{ url('/admin') }}">
+                        Quản lý phòng thi
+                    </a>
+                </div>
+                <div class="col-2"  style="border-left:1px solid;">
+                    <a href="{{ url('/dang-ki-phong-thi') }}">
+                        Đăng kí phòng thi
+                    </a>
+                </div>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>

@@ -4,6 +4,14 @@
             "section": "Manager Exams",
             "items": [
                 {
+                    "title": "Rooms",
+                    "url": "\/admin\/rooms"
+                },
+                {
+                    "title": "Shifts",
+                    "url": "\/admin\/shifts"
+                },
+                {
                     "title": "Classes",
                     "url": "\/admin\/classes"
                 },
@@ -14,14 +22,6 @@
                 {
                     "title": "Subjects",
                     "url": "\/admin\/subjects"
-                },
-                {
-                    "title": "Shifts",
-                    "url": "\/admin\/shifts"
-                },
-                {
-                    "title": "Rooms",
-                    "url": "\/admin\/rooms"
                 }
             ]
         },

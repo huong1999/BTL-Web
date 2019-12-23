@@ -112,4 +112,10 @@ class User extends Authenticatable
         return $subjects;
     }
 
+    public function deleteUser($id) {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return $user;
+    }
 }
