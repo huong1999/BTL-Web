@@ -14,6 +14,12 @@
                         </a>
 
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/subjects', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
+                        <select name="room" id="room" class="form-control mr-1">
+                            <option value="">- All Room -</option>
+                            @foreach($rooms as $key => $value)
+                                <option value="{{ $key }}" {{ request('room') == $key ? 'selected' : ''}}>{{ $value }}</option>
+                            @endforeach
+                        </select>
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
                             <span class="input-group-append">
@@ -27,10 +33,12 @@
                         <br/>
                         <br/>
                         <div class="table-responsive">
-                            <table class="table table-borderless">
-                                <thead>
+                            <table class="table table-striped table-bordered table-hover">
+                            <thead>
                                     <tr>
-                                        <th>#</th><th>Name</th><th>Actions</th>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>

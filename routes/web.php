@@ -33,7 +33,8 @@ Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => ['aut
     Route::resource('exams', 'ExamsController');
     Route::resource('shifts', 'ShiftsController');
     Route::resource('subjects', 'SubjectsController');
+    Route::resource('rooms', 'RoomsController');
+    Route::get('pdf','RoomsController@pdf');
     Route::get('/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
     Route::post('/generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 });
-

@@ -21,7 +21,7 @@ class ShiftsController extends Controller
         $keyword = $request->get('search');
         $exam = $request->input('exam');
         $subject = $request->input('subject');
-        $perPage = 25;
+
         $exams = Exam::pluck('name', 'id');
         $subjects = Subject::pluck('name', 'id');
         $shifts = Shift::with('exam')
@@ -34,7 +34,7 @@ class ShiftsController extends Controller
             ->when($subject, function ($query) use ($subject) {
                 $query->where('subject_id', $subject);
             })
-            ->latest()->paginate($perPage);
+            ->latest()->paginate(15);
 
         return view('admin.shifts.index', compact('shifts', 'exams', 'subjects'));
     }
@@ -89,7 +89,10 @@ class ShiftsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified reSA	Học kỳ 2 - 2019	2019-12-23	15h	16h50	￼ ￼ ￼
+3	Ca thi 3	DSA	Học kì 1 - 2019	2019-12-22	13h	14h50	￼ ￼ ￼
+2	Ca thi 2	DSA	Học kỳ 2 - 2019	2019-12-22	9h	10h50	￼ ￼ ￼
+1	Ca thi 1	Triếsource.
      *
      * @param int $id
      *

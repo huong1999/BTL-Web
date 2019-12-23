@@ -15,6 +15,7 @@
 
                         {!! Form::open(['method' => 'GET', 'url' => '/admin/users', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
                         <select name="role" id="role" class="form-control mr-1">
+                            <option value="">- All Role -</option>
                             @foreach($roles as $key => $value)
                                 <option value="{{ $key }}" @if(request('role')) {{ request('role') == $key ? 'selected' : ''}} @else {{ $key  == 'user' ? 'selected' : '' }} @endif>{{ $value }}</option>
                             @endforeach
@@ -24,6 +25,11 @@
                             @foreach($classes as $key => $value)
                                 <option value="{{ $key }}" {{ request('class') == $key ? 'selected' : ''}}>{{ $value }}</option>
                             @endforeach
+                        </select>
+                        <select name="subject" id="subject" class="form-control mr-1">
+                            <option value="">- All Subject -</option>
+                            @foreach($subjects as $key => $value)
+                                <option value="{{ $key }}" {{ request('subject') == $key ? 'selected' : ''}}>{{ $value }}</option>                            @endforeach
                         </select>
                         <div class="input-group">
                             <input type="text" class="form-control" name="search" placeholder="Search..."
@@ -39,12 +45,14 @@
                         <br/>
                         <br/>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
-                                    <th>Email</th>
+                                    <th>Code</th>
+                                    <th>Date Of Birth</th>
+                                    <th>Class</th>
                                     <th>Actions</th>
                                 </tr>
                                 </thead>
@@ -53,12 +61,10 @@
                                     <tr>
                                         <td>{{ $item->id }}</td>
                                         <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td>
-                                        <td>{{ $item->email }}</td>
+                                        <td>{{ $item->code }}</td>
+                                        <td>{{ $item->date_of_birth }}</td>
+                                        <td>{{ $item->class->name }}</td>
                                         <td>
-                                            <a href="{{ url('/admin/users/' . $item->id) }}" title="View User">
-                                                <button class="btn btn-info btn-sm"><i class="fa fa-eye"
-                                                                                       aria-hidden="true"></i></button>
-                                            </a>
                                             <a href="{{ url('/admin/users/' . $item->id . '/edit') }}"
                                                title="Edit User">
                                                 <button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o"

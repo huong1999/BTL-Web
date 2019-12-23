@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exam;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -10,6 +11,12 @@ use Illuminate\Http\Request;
 
 class SubjectsController extends Controller
 {
+    protected $subject;
+
+    public function __construct(Subject $subject)
+    {
+        $this->subject = $subject;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,16 +25,17 @@ class SubjectsController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('search');
-        $perPage = 25;
-
-        if (!empty($keyword)) {
-            $subjects = Subject::where('name', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $subjects = Subject::latest()->paginate($perPage);
-        }
-
-        return view('admin.subjects.index', compact('subjects'));
+        $room = $request->input('room');
+        $rooms = $this->subject->getRoom();
+        $subjects = Subject::with('room')
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', "%$keyword%");
+            })
+            ->when($room, function ($query) use ($room) {
+                $query->where('room_id', $room);
+            })
+            ->latest()->paginate(25);
+        return view('admin.subjects.index', compact('subjects', 'rooms'));
     }
 
     /**
@@ -37,7 +45,9 @@ class SubjectsController extends Controller
      */
     public function create()
     {
-        return view('admin.subjects.create');
+        $rooms = $this->subject->getRoom();
+
+        return view('admin.subjects.create', compact('rooms'));
     }
 
     /**
@@ -53,7 +63,7 @@ class SubjectsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         Subject::create($requestData);
 
         return redirect('admin/subjects')->with('flash_message', 'Subject added!');
@@ -83,8 +93,9 @@ class SubjectsController extends Controller
     public function edit($id)
     {
         $subject = Subject::findOrFail($id);
+        $rooms = $this->subject->getRoom();
 
-        return view('admin.subjects.edit', compact('subject'));
+        return view('admin.subjects.edit', compact('subject', 'rooms'));
     }
 
     /**
@@ -101,7 +112,7 @@ class SubjectsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $subject = Subject::findOrFail($id);
         $subject->update($requestData);
 

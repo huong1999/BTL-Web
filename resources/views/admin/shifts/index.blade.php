@@ -44,7 +44,7 @@
                         <br/>
                         <br/>
                         <div class="table-responsive">
-                            <table class="table table-borderless">
+                            <table class="table table-striped table-bordered table-hover">
                                 <thead>
                                 <tr>
                                     <th>#</th>
@@ -60,7 +60,7 @@
                                 <tbody>
                                 @foreach($shifts as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
+                                        <td>{{ $item->id }}</td>
                                         <td>{{ $item->name }}</td>
                                         <td>{{ $item->subject->name }}</td>
                                         <td>{{ $item->exam->name }}</td>

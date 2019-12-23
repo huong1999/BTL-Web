@@ -18,9 +18,14 @@
                 {
                     "title": "Shifts",
                     "url": "\/admin\/shifts"
+                },
+                {
+                    "title": "Rooms",
+                    "url": "\/admin\/rooms"
                 }
             ]
-        },{
+        },
+        {
             "section": "Decentralization",
             "items": [
                 {
@@ -34,15 +39,6 @@
                 {
                     "title": "Permissions",
                     "url": "\/admin\/permissions"
-                }
-            ]
-        },
-        {
-            "section": "Tools",
-            "items": [
-                {
-                    "title": "Generator",
-                    "url": "\/admin\/generator"
                 }
             ]
         }

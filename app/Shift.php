@@ -54,4 +54,15 @@ class Shift extends Model
     {
         return $this->belongsTo(Subject::class)->withDefault(['name' => 'Không tìm thấy môn học !']);
     }
+
+    public function subjects()
+    {
+        return $this->hasMany('App\Subject');
+    }
+
+    public function rooms()
+    {
+        return $this->belongsToMany(Room::class);
+    }
+
 }

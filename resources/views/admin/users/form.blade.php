@@ -36,6 +36,10 @@
     <label for="code">Code</label>
     <input type="text" class="form-control" name="code" id="code" value="{{ isset($user) ? $user->code : old('code') }}">
 </div>
+<div class="form-group">
+    {!! Form::label('subject', 'Subject Exam: ', ['class' => 'control-label']) !!}
+    {!! Form::select('subjects[]', $subjects, isset($user_subjects) ? $user_subjects : [], ['class' => 'form-control', 'multiple' => true]) !!}
+</div>
 <div class="form-group{{ $errors->has('roles') ? ' has-error' : ''}}">
     {!! Form::label('role', 'Role: ', ['class' => 'control-label']) !!}
     {!! Form::select('roles[]', $roles, isset($user_roles) ? $user_roles : [], ['class' => 'form-control', 'multiple' => true]) !!}

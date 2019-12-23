@@ -4,36 +4,34 @@ namespace App\Http\Controllers\Admin;
 
 use App\Classes;
 use App\Http\Controllers\Controller;
-use App\Role;
 use App\User;
+use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
 class UsersController extends Controller
 {
-    /**
+    protected $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
+        /**
      * Display a listing of the resource.
      *
      * @return void
      */
     public function index(Request $request)
     {
-        $keyword = $request->get('search');
-        $class = $request->get('class');
-        $roles = Role::pluck('label', 'name');
-        $type = $request->input('role') == 'admin'? 'isAdmin' : 'isUser';
-        $classes = Classes::pluck('name', 'id');
-        $users = User::has($type)
-            ->when($keyword, function ($query) use ($keyword) {
-                $query->where('name', 'LIKE', "%$keyword%");
-            })
-            ->when($class, function ($query) use ($class) {
-                $query->where('class_id', $class);
-            })
-            ->latest()->paginate(15);
+        $roles = $this->user->getRole();
+        $rooms = $this->user->getRoom();
+        $classes = $this->user->getClass();
+        $subjects = $this->user->getSubject();
+        $users = $this->user->getType($request);
 
-        return view('admin.users.index', compact('users', 'roles', 'classes'));
+        return view('admin.users.index', compact('users', 'roles', 'classes', 'rooms', 'subjects'));
     }
 
     /**
@@ -43,11 +41,12 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $roles = Role::select('id', 'name', 'label')->get();
-        $roles = $roles->pluck('label', 'name');
-        $classes = Classes::pluck('name', 'id');
+        $roles = $this->user->getRole();
+        $rooms = $this->user->getRoom();
+        $classes = $this->user->getClass();
+        $subjects = $this->user->getSubject();
 
-        return view('admin.users.create', compact('roles', 'classes'));
+        return view('admin.users.create', compact('roles', 'classes', 'rooms', 'subjects'));
     }
 
     /**
@@ -66,13 +65,11 @@ class UsersController extends Controller
                 'name' => 'required',
                 'email' => 'required|string|max:255|email|unique:users',
                 'password' => 'required',
-                'roles' => 'required'
+                'roles' => 'required',
             ]
         );
 
-        $data = $request->except('password');
-        $data['password'] = bcrypt($request->password);
-        $user = User::create($data);
+        $user = $this->user->addUser($request);
 
         foreach ($request->roles as $role) {
             $user->assignRole($role);
@@ -104,16 +101,25 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        $roles = Role::select('id', 'name', 'label')->get();
-        $roles = $roles->pluck('label', 'name');
-        $classes = Classes::pluck('name', 'id');
-        $user = User::with('roles')->findOrFail($id);
+        $roles = $this->user->getRole();
+        $rooms = $this->user->getRoom();
+        $classes = $this->user->getClass();
+        $subjects = $this->user->getSubject();
+        $user = User::with('roles', 'rooms', 'subjects')->findOrFail($id);
         $user_roles = [];
         foreach ($user->roles as $role) {
             $user_roles[] = $role->name;
         }
+        $user_rooms = [];
+        foreach ($user->rooms as $room) {
+            $user_rooms[] = $room->name;
+        }
+        $user_subjects = [];
+        foreach ($user->subjects as $subject) {
+            $user_subjects[] = $subject->name;
+        }
 
-        return view('admin.users.edit', compact('user', 'roles', 'user_roles', 'classes'));
+        return view('admin.users.edit', compact('user', 'roles', 'rooms', 'subjects', 'user_roles', 'user_rooms', 'user_subjects', 'classes'));
     }
 
     /**
@@ -144,6 +150,7 @@ class UsersController extends Controller
         $user->update($data);
 
         $user->roles()->detach();
+
         foreach ($request->roles as $role) {
             $user->assignRole($role);
         }
